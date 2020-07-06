@@ -1,4 +1,5 @@
 import urlparse
+from urllib.parse import urlparse, urljoin
 import scrapy
 from time import localtime, strftime 
 from scrapy.http import Request
@@ -14,7 +15,7 @@ class BasicSpider(scrapy.Spider):
         #get urls and yield requests
         for url in response.xpath('//div[@class="all"]//ul[@class="unstyled"]//li'):
             url_text = url.xpath('a/@href').extract()
-            full_url = urlparse.urljoin('http://pm25.in', url_text[0])
+            full_url = urljoin('http://pm25.in', url_text[0])
             yield Request(full_url, callback = self.parse_item, dont_filter=True)
         send_email("RasPi working fine!", "Scraper report")
 
